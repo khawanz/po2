@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(__DIR__) . '/model/order.php';
-require_once dirname(__DIR__) . '/model/item.php';
+require_once dirname(__DIR__) . '/model/Order.php';
+require_once dirname(__DIR__) . '/model/Item.php';
 
 class DashboardController{            
     private $order;
@@ -86,6 +86,19 @@ class DashboardController{
         $result = array();
         foreach ($totalItems as $data) {            
             $result[$data['period']][$data['name']] = $data['total'];  
+        }
+        
+        return $result;
+    }
+    
+    public function displayDonut()
+    {
+        $dayLeftArray = $this->order->getDayLeftProgressSelling();
+        $result = array();
+        $i = 0;
+        foreach ($dayLeftArray as $data) {
+            $result[$i]['label'] = $data['supplier_name'];
+            $result[$i++]['value'] = $data['day_left'];
         }
         
         return $result;

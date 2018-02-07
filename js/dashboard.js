@@ -85,4 +85,14 @@ $(document).ready(function(){
     });
     
     $('#select-inventory-area').trigger('change');
+    
+    displayDonut();
+        
+    function displayDonut() {
+        Morris.Donut({
+            element: 'donut-chart',
+            data: totalDayData,
+            resize: true
+        });
+    }
 });

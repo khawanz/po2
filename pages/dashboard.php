@@ -1,24 +1,19 @@
 <?php
 // HEADER
-include '/header.php';
+include_once 'header.php';
 ?>
 
     <div id="wrapper">
 
         <?php
         // NAVIGATION
-        include '/navigation.php';
+        include_once 'navigation.php';
         ?>
 
         <?php
         
-        require_once dirname(__DIR__) . '/controller/DashboardController.php';
-        require_once dirname(__DIR__) . '/model/Order.php';
-        require_once dirname(__DIR__) . '/model/Item.php';
-        
-        $order = new Order();
-        $item = new Item();
-//        var_dump($item->getAllItem());
+        require_once dirname(__DIR__) . '/controller/DashboardController.php';        
+
         $dashboardController = new DashboardController();
         $totalOrderByStatus = $dashboardController->displayStatusOrder();
         $new = $totalOrderByStatus['new'];
@@ -160,7 +155,7 @@ include '/header.php';
                             <i class="fa fa-bar-chart-o fa-fw"></i> Total Day Left
                         </div>
                         <div class="panel-body">
-                            <div id="morris-donut-chart"></div>
+                            <div id="donut-chart"></div>
                             <a href="#" class="btn btn-default btn-block">View Details</a>
                         </div>
                         <!-- /.panel-body -->
@@ -223,72 +218,15 @@ include '/header.php';
     </div>
     <!-- /#wrapper -->
     
-    <?php 
-    
-    // display bar chart (total order yang masuk)
-//    $dataBar = $dashboardController->displayBar('year');
-//    $data = array();
-//    $suppliers = array();
-//    $i = 0;
-//    foreach ($dataBar as $year => $values) {
-//        $data[$i]['y'] = $year;
-//        foreach ($values as $supplier_name => $total) {            
-//            $data[$i][$supplier_name] = $total;
-//            if (!in_array($supplier_name, $suppliers)) {
-//                $suppliers[] = $supplier_name;
-//            }
-//        }
-//        $i++;
-//    }
-//        
-//    $dataMorrisBar = json_encode($data);
-//    $suppliersMorrisBar = json_encode($suppliers);
-//    
-//    // display area chart (total item yang dijual)
-//    $dataArea = $dashboardController->displayAreaChartSelling();
-//    $data = array();
-//    $items = array();
-//    $i = 0;
-//    foreach ($dataArea as $year => $values) {
-//        $data[$i]['period'] = (string)$year;
-//        foreach ($values as $item_name => $total) {            
-//            $data[$i][$item_name] = (int)$total;
-//            if (!in_array($item_name, $items)) {
-//                $items[] = $item_name;
-//            }
-//        }
-//        $i++;
-//    }
-//    
-//    $dataSelling = json_encode($data);
-//    $itemsSelling = json_encode($items);
-//    
-//    // display area chart (total item yang dibeli)
-//    $dataArea2 = $dashboardController->displayAreaChartBuying();
-//    $data2 = array();
-//    $items = array();
-//    $i = 0;
-//    foreach ($dataArea2 as $year => $values) {
-//        $data2[$i]['period'] = (string)$year;
-//        foreach ($values as $item_name => $total) {            
-//            $data2[$i][$item_name] = (int)$total;
-//            if (!in_array($item_name, $items)) {
-//                $items[] = $item_name;
-//            }
-//        }
-//        $i++;
-//    }
-//    
-//    $dataBuying = json_encode($data2);
-//    $itemsBuying = json_encode($items);
-    ?>
-    <script>
-        
-//        console.log('dataMorris',dataMorris);
-//        console.log('suppliers',suppliersMorris);
-//        console.log('dataMorrisArea',dataBuying);
-//        console.log('items',itemsBuying);
-    </script>
 <?php
-include '/footer.php';
+   // donut chart (order IN still in progress)
+   $totalDay = $dashboardController->displayDonut();   
+   $totalDayData = json_encode($totalDay);
+?>
+  <script>
+      var totalDayData = <?php echo $totalDayData ?>;console.log('total', totalDayData);
+  </script> 
+  
+<?php
+include_once 'footer.php';
 

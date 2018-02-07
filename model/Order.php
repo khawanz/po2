@@ -2,7 +2,8 @@
 
 include_once dirname(__DIR__) . '/config/config.php';
 
-class Order{
+class Order 
+{
     private $dbconnection;
     private $db = DB;
     private $host = HOST;
@@ -240,6 +241,17 @@ class Order{
                 . "LEFT JOIN inventories inv ON inv.item_id=i.item_id "
                 . "WHERE o.order_inout = 'OUT' AND o.status IN ('new','done') AND o.created_at BETWEEN DATE_ADD(NOW(), INTERVAL -6 DAY) AND NOW() "
                 . "GROUP BY period, i.name ";
+               
+        $result = $this->dbconnection->query($query);        
+        return $result->fetchAll();
+    }
+    
+    public function getDayLeftProgressSelling()
+    {
+        $query = "SELECT s.name AS supplier_name, "
+                . "DATEDIFF(o.estimated_delivery, NOW()) AS day_left "
+                . "FROM orders o LEFT JOIN suppliers s ON s.supplier_id=o.supplier_id "
+                . "WHERE o.order_inout = 'IN' AND o.status = 'on progress' AND o.estimated_delivery > NOW()";
                
         $result = $this->dbconnection->query($query);        
         return $result->fetchAll();
